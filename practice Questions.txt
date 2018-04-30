@@ -1,0 +1,7 @@
+1.Create a cron schedule to delete all the files in a folder every 30 minutes on all working days-hours of the third quarter.
+
+2.Customised primary group and Home directory
+3.change login cell,userid,groupid
+4.LVM logical disks, swap partitions, soft link and hard links
+5.top command, crontab ,yum server and rpm
+

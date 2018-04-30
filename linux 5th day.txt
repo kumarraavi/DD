@@ -1,0 +1,90 @@
+VNC server:
+
+In Server Machine:
+
+Install the packages:
+
+	yum install pixman pixman-devel libXfont
+	yum install vnc-server
+	
+Create the VNC user:
+	
+	useradd vncuser1
+	useradd vncuser2
+	passwd vncuser1
+	su - vncuser1
+	vncpasswd
+
+Configuring the server:
+
+	vim /etc/sysconfig/vncservers 	
+	:se nu
+	(18,19 remove #)
+	copy 19 line (Esc y11)
+	paste it in 20th line(Esc p)
+
+	geometry 800*600
+	geometry 1024*768
+	service vncserver start
+	
+
+	vnc
+	yum install tiger* -y
+	vncviewer 192.168.0.254:2	
+
+Client Machine:
+
+	yum install tiger* -y
+	vncviewer 192.168.0.254:1
+	w
+	ifconfig
+	
+IP tables:
+
+	ssh root@server (screen shot)
+	pwd
+	w
+	vi firewall
+		iptables -F
+		iptables -A INPUT -p tcp --dport 22 -j REJECT (save the file)
+		iptables -A INPUT -p tcp --dport 21 -j REJECT
+	sh firewall								ssh root@server
+	
+
+Remote installation:
+
+	ftp://server/pub/rhel6
+	
+	boot:linux askmethod
+	cd /var/www/html/rhel6
+
+1.Unmount the file system for reducing
+2.Check the file system after unmount
+3.Reduce the file system
+4.Reduce the logical volume size than current size
+5.Recheck the file system for error
+6.Remount the file-system back to stage
+
+	lvs
+	df -hT
+	umount /daughter/
+	df -hT
+	e2fsck -ff /dev/jabbar/laveena
+	resize2fs /dev/jabbar/laveena 10G
+	lvreduce -L -5G /dev/jabbar/laveena
+	mount -a
+	df -hT
+	
+
+
+	cd /root/Desktop/
+	ll
+	vim /testing.sh
+		echo "welcome to capgemini"
+		date
+		pwd
+		whoami (save it)
+
+	chmod +x /testing.sh
+	sh /testing.sh
+	

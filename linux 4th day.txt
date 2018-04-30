@@ -1,0 +1,369 @@
+NET WORKING:
+
+	DOS will not support to network.
+	IP adress
+
+	Every class has priority bits.
+	class A	-0
+	Class B	-10
+	Class c	-110
+	Class D	-1110
+	Class E	-11110
+	
+By default network is disable.
+
+Enable the network:
+	
+	vim /etc/sysconfig/network-scripts/ifcfg-eth0
+	change onboot to yes
+	
+Setting the IP address:
+
+	setup 
+	select network configuration
+	select run tool
+	device configuration
+	192.168.0.254
+	255.255.255.0
+	192.168.0.254
+	
+	service network restart
+	chkconfig network on
+	service network status
+	ifconfig
+	ifconfig eth0
+	ping 0
+	ping 192.168.0.254 -c 2
+
+Change the host name:
+
+	Temparary
+	Permanent
+
+Temporary:
+	hostname
+	hostname server
+
+Permanent:
+	vim /etc/hosts (Identify the hosts)
+	192.168.0.254	server (ADD this)
+	192.168.0.1	client (add this)
+
+	vim /etc/sysconfig/network (change the hostname)
+	change the name
+	hostname (temparory change the name)
+	hostname server
+	bash
+	reboot
+	ping server (in server)
+	ping client (from client)
+	ping server (from client)
+	vim /etc/inittab
+
+
+	cat > iam (To create)
+	ls -li iam (To list inode number)
+	ln iam you (new name)
+	ls -li iam you (List inode number)
+	cat >> you (edit the file)
+	rm -rfv you (remove the hardlink file)
+
+
+Softlink:
+	ln -s iam you (create a file with soft link)
+	ls -li iam you (List the inode number)
+	cat >> you (To edit the file)
+	cat iam (To see the file)
+	rm -rfv iam (To remove the file)
+
+	
+	Hard link					Soft link
+	
+	Inode number will be the same			Inode number is different
+	If one file is edited another will be edited	If one file is edited another will be edited
+	We can't identify from which file it is edited	If i deleted the link file nothing wil happened
+	If u delete one file No effect on other file	If u delete source file link file not be accessed
+
+rpm	-->Redhat Packet Manager		
+M server
+	M client in server
+	M client in client
+	
+VM -->Removable disks -->CD/DVD(SATA) -->connect
+
+1.mount the dvd
+2.Right click on dvd and open in terminal
+3.	cd Packages/
+	pwd
+	ll
+	rpm -ivh deltarpm	(i-install,v-verbous,h-status) In the same order only
+	rpm -ivh python-deltarpm
+	rpm -ivh ftp
+	rpm -ivh vsftpd
+	rpm -ivh createrepo
+	cd ..
+	mkdir -p /var/ftp/pub/rhel6
+	cp -rfv * /var/ftp/pub/rhel6/
+
+	createrepo -g repodata/		comps-rhel6-Server.xml	/var/ftp/pub/rhel6
+	
+
+	vim /etc/selinux/config 
+	selinux=disabled (should reboot the system)
+
+Configure firewall:
+
+	system-config-firewall
+	make it disable and apply
+	service vsftpd restart
+	chkconfig vsftpd on
+	service vsftpd status
+
+yum Client in server:
+
+	cd /etc/yum.repos.d/
+	ll
+	rm -rfv *
+	ll
+	vim server.repo
+	[RHEL 6]
+	name=RHEL6
+	baseurl=ftp://192.168.0.254/pub/rhel6/
+	enabled=1
+	gpgcheck=0
+	
+	yum clean all
+	yum list all
+	yum makecache
+	
+Telnet server:
+
+	cd
+	rpm -qa | grep *telnet*
+	rpm -qa | wc -l (count of packages)
+	rpm -qa | grep *ssh*
+	rpm -qa | grep *sshd
+	rpm -qa | grep ssh*
+
+	yum install telnet*
+
+By default telnet is disabled
+	
+	vim /etc/xinetd.d/telnet			telnet 0
+	make disable as no				telnet server
+	service xinetd restart
+	chkconfig xinetd on
+	telnet 0
+	
+	pwd
+	w
+	
+	exit
+	
+
+yum client in client:
+	
+	cd Packages
+	rpm -ivh ftp
+	rpm -ivh vsftpd
+	cd /etc/yum.repos.d/
+	rm -rfv *
+	vim client.repo
+
+	[RHEL6]
+	name=RHEL6
+	baseurl=ftp://server/pub/rhel6/
+	enabled=1
+	gpgcheck=0
+
+	yum clean all
+	yum list all
+	yum install telnet* -y
+	telnet server
+	username & password
+	w
+	exit
+	
+	top 
+
+gentle kill :signal[15]	-->First it completes the task and then kill that process.
+
+	type x and highlight the line and take picture.
+
+
+		Field	Discription	Allowed value
+		MIN	Minute field	0 to 59
+		HOUR	Hour field	0 to 23
+		DOM	Day of Month	1-31
+		MON	Month field	1-12
+		DOW	Day of Week	0-6
+		CMD	Command		Any command to be executed
+
+	30 08 10 06 * /home/vinay/full-backup (minutes,hours,date,month,week)
+	00 11,16 * * * /home/vinay/bin/incremental-backup
+
+Commands:
+	mkdir /deleteme
+	crontab -l
+	crontab -l -u vinay
+	crontab -e
+	*/30	09-18	*	10-12	1-5	rm -rfv /deleteme
+	
+	*/15	18-23,0-9	*	10-12	0,6	rm -rfv /deleteme
+	
+	service crond restart
+	chkconfig crond on
+	crontab -l
+	
+
+NTP Server:
+
+	yum install ntp* -y
+	vim /etc/ntp.conf
+		:se nu 18 (remove # )
+		19(restrict defaults ignore)
+		(remove 1 server and give your ip address and make the remaining servers as comment)
+		server 127.127.1.0 iburst 
+	service ntpd restart
+	chkconfig ntpd on
+	service ntpd status
+	
+In client machine:
+	
+	login as root
+	rpm -qa | grep ntp
+	service ntpd restart
+	chkconfig ntpd on
+	date 
+	date -s "01/01/2000 10:10:10" (Changing the date)
+	date
+	ntpdate -u 192.168.0.254 (Getting the date from server)
+	date
+	
+In server machine:
+	
+Configuration of log server:
+	yum install rsyslog* -y
+	vim /etc/rsyslog.conf
+		:se nu(13,14,17,18 -enable put $ symbol)
+		(45/var/log/secure_log)
+	service rsyslog restart
+	chkconfig rsyslog on
+	service rsyslog status
+
+cd /var/log/
+tail -f secure_log
+^z
+		
+In client machine:
+
+	yum install rsyslog* -y
+	vim /etc/rsyslog.conf
+		:se nu(79 type server ip address instead of remote host)
+	service rsyslog restart
+	chkconfig rsyslog on
+
+useradd hitler
+passwd hitler
+
+In server or client Machine:
+
+	RAID	-->Two types	-->Hardware & Software
+
+RAID 10:(Add two hard disks)
+
+	Except striping For all the other raid techniques hard disk size will be same.
+	yum install mdadm* -y
+	fdisk -l
+	w
+	kpartx /dev/sdc
+	mdadm -C /dev/md0 -n2 /dev/sdc1 /dev/sdd1 -l1 (y)
+
+	mdadm D /dev/md0
+	
+create file system on raid md device:
+	
+	mkfs.ext4 /dev/md0
+	mkdir /raid1 (mount point)
+	mount /dev/md0 /raid1
+	df -hT
+	cd /raid1 /
+	cat > file
+	cat file
+	reboot 
+	
+	fdisk -l
+	vim /etc/fstab
+		#RAID1
+		/dev/md127	/RAID1	ext4	defaults	0 0
+
+	mount -a
+	df -hT
+	df -h
+	df
+	again reboot
+	
+	df -ht
+	cd /raid1
+	ll
+	cat file1
+	
+	cd ..
+	mdadm -D /dev/md127
+	mdadm -a /dev/mdadm /dev/new disk partition
+
+	new partition in new disk
+	fd (for selection of partition id)
+	mdadm -a /dev/md127 /dev/sde1
+	mdadm -D /dev/md127	(Display the status)
+
+	mdadm -D /dev/md127 /dev/sdd1 (spare)
+	mdadm /dev/md127 
+
+	mdadm /dev/md127 -f /dev/sdc1
+	mdadm /dev/md127
+
+	mdadm /dev/md127 -r /dev/sdc1
+	mdadm -D /dev/md127
+	
+dump & restore:
+Client machine:
+
+	cd..
+	mkdir /testing
+	cd /testing/
+	pwd
+	mkdir ram{1..10}
+	ll
+	//man dump
+	yum install dump* -y
+	dump --info
+	cd ..
+	dump -0af /testing.dump /testing/
+	ls -l
+	cd /testing
+	pwd
+	ll
+	rm -rfv ram1 ram2
+	cd /
+	restore -if /testing.dump
+		restore>pwd
+		/testing
+		ls
+		add ram1
+		add ram2
+		extract
+		quit
+		
+ssh:
+	
+In Client Machine:
+						Telnet	
+	By default ssh is enabled		It is disabled
+	It is secured connection.		It is non secured
+	Data is encrypted			Data is not encrypted
+	By default it is installed		By 
+
+	root@server			In server
+	ssh root@server			w
+	

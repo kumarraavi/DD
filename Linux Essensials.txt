@@ -1,0 +1,317 @@
+Commands:
+				useadd ram
+				passwd ram
+	status of command:	echo $?
+
+When user type some garbage value the result will be 127
+If the command is not successful then result will be 1
+
+Command:	cat /etc/passwd
+
+	Result of the command: 7 FIELDS
+	
+	1User name.2.Password 3.User id 4.Group id 5.User full name 6.Home directory 7.Login cell
+
+Total login cells:
+	/bin/bash
+	/bin/csh
+	/bin/dash
+	/bin/sh
+	/bin/tcsh
+	/sbin/nologin
+
+Command:	cat /etc/shadow
+
+	For password if u dont give any password it will give 2 exclamatory symbols.
+	If u give password it will start with '$' and end with '/' in encrypted code.
+	If u remove the password it wont give anything.
+	If u lock the user Starts with ! and encrypted password
+
+Command:	groupadd capgemini
+
+
+Basic group administration:
+
+Default Primary Group:
+	When u create a user, with a same name a group is already created and he is the only member in that group.(default primary group)
+	Only one member is allowed in this group.
+
+Customised Primary Group:
+	Multiple users will be a part in this group.
+Two types of groups	-->Primary
+		    	-->Secondary
+
+	Primary Group	-->Customised Primary Group
+			-->Default Primary Group
+
+	when u create useradd or group add when i want to change the data i will use groupmod or usermod
+	To delete userdel or groupdel
+
+User and Group administration advance:
+
+Command:	cat /etc/passwd | grep ram (grep is filtering command)
+		cat /etc/group | grep capgemini
+		cat /etc/shadow
+		useradd --info
+		-u-->uid
+		-s-->shell
+		-G-->secondary group
+		-g-->group
+
+		mkdir /admin
+		groupadd acct
+		groupadd hr
+		useradd -d /admin/boss -c "CEO" -g capgemini -G acct,hr -u 2200 boss
+		cat /etc/passwd | grep boss
+		userdel -r boss
+		usermod -d /admin/ram ram
+		usermod -g capgemini ram
+		id ram
+		usermod -l newram ram
+		passwd -d newram
+		passwd -l newram
+		passwd -u newram
+
+
+We should not change Primary group and Home directory with user mode command 
+
+To change the login name:
+
+	usermod -l newram ram
+	
+Without password user login:
+
+	passwd -d newram
+	cat /etc/shadow | grep newram
+
+	This newram cant login remotely. For remote login password is essential.
+
+How to lock the user:
+
+	passwd -l newram
+	passwd -u newram
+
+How to change id of a group:
+
+	cat /etc/group | grep capgemini
+	groupmod -g 5000 capgemini
+
+How to change name of a group:
+
+	groupmod -n newcapgemini capgemini
+	cat /etc/group | grep newcapgemini
+
+		
+	gpasswd -M groupname(g1),g2,g3 newcapgemini
+	cat /etc/group | grep newcapgemini
+	gpasswd -d g1 newcapgemini
+
+	-a-->add one user
+	-d-->delete the user
+
+Commands:
+	ls -ld /home/
+	cd ..
+	mkdir /only4u
+	su - boss
+	file /home/ram/
+	chmod 777 /only4u/
+	ls -ld /only4u/
+	passwd -d ram
+	cat abc
+	cat >> abc
+	cat > abc
+	su user (home directory is same)
+	su - user (user's home directory)
+	chmod +t abc.txt
+	getfacl filename
+	setfacl -m u:user1:rwx,u:tapos:---,u:newram:r--,g:newcapgemini:rwx filename
+	chown boss abc.txt
+	chgrp newcapgemini abc.txt
+	useradd god
+	visudo esc: se nu 
+	su - boss
+	sudo useradd god
+
+In linux everything is a file
+d	-->Which type of file it is
+c	-->Character device
+l	-->soft link
+s	-->Socket
+b	-->Block device
+
+Root user to normal user = no password
+normal user to root user = password
+normal user to normal user = password
+
+ACL(Access Control List):
+	
+	Before ACL use the chmod command.
+
+Partitionig:
+	
+	first hard disk-	sda
+	second hard disk-	sdb
+	third hard disk-	sdc
+
+In mbr maximum 4 partitions.
+
+steps:
+	shut down the system
+	Edit virtual machine settings
+	Add hard disk
+	Power on the system
+	
+To see how many harddisks we have:
+	
+	fdisk -l (To list hard disks)
+	fdisk /dev/sdb
+	m (Print this menu)
+	n (Add a new partition)
+	p (Print the partition table)
+	t (Change the partition's system id)
+	d (Delete a partition)
+	w (Write table to disk and exit)
+	
+You should not create file system in extended partition
+
+	kpartx /dev/sdb (Initializing changes in hard disk)
+
+Create the file system:
+	
+	mkfs.ext2 /dev/sdb1
+	mkfs.ext3 /dev/sdb2
+	mkfs.ext4 /dev/sdb3
+	mkfs.vfat /dev/sdb5
+	mkfs.ext4 /dev/sdb6
+
+Mounting the data:
+
+	mkdir /data
+	mkdir /data1
+	mkdir /data2
+	mkdir /data3
+	mkdir /data4
+	mkdir /data5
+	mkdir /data6
+
+Mounting:	2 types	-->Temporary
+			-->Permanent
+Temporary mounting is only for the session untill the reboot only
+	
+	mount /dev/sdb1 /data
+	df -hT (Check)
+	
+Permanent Mounting:
+	
+	vim /etc/fstab
+	#partition
+	/dev/sdb1	/data	ext2	default	0	0
+	/dev/sdb2	/data	ext3	default	0	0
+	/dev/sdb3	/data	ext4	default	0	0
+	/dev/sdb5	/data	vfat	default	0	0
+	/dev/sdb6	/data	ext4	default	0	0
+	/dev/sdb7	/data	ext4	default	0	0
+	
+	mount -a (mount permanently)
+	free -m (size in mega bytes)
+	fdisk /dev/sdc
+	
+Make the partiton as Swap:
+	
+	mkswap /dev/sdc1
+	swapon /dev/sdc1
+	swapon -s
+	vim /etc/fstab (permanent mounting)
+	#swap
+	/dev/sdc1	swap	swap	defaults 0	0
+	
+Volume :
+
+PV	-->Physical Volume
+VG	-->Volume Group
+LV	-->Logical Volume
+
+	New harddisks:sdd,sde,sdf
+	id number:	8e for LVM
+	
+Create Physical volume:
+
+	pvcreate /dev/sdd1 /dev/sde1 /dev/sdf1
+	
+To view the Physical volume:
+
+	pvs or pvdisplay
+
+Create Volume Group:
+
+	vgcreate vkr /dev/sdd1 /dev/sde1 /dev/sdf1
+
+To view  volume group:
+
+	vgs or vgdisplay
+
+Create Logical volume:
+
+	lvcreate vkr -L +10G -n rvk(name of volume group)
+	lvcreate vkr -L +15G -n kvr
+
+To view logical volume:
+	
+	lvs or lvdisplay
+
+Creating the file system:
+
+	mkfs.ext4 /dev/vkr/rvk
+	mkfs.ext4 /dev/vkr/kvr
+
+Create the mount point:
+
+	mkdir /data3
+	mkdir /data4
+	vim /etc/fstab
+	/dev/vkr/rvk	/data3	ext4	defaults	0 0
+	/dev/vkr/kvr	/data4	ext4	defaults	0 0
+	mount -a
+	df -hT
+	cd /rvk
+	touch 1
+
+Extend the logical volume:
+	
+	lvresize -L +1G -n /dev/vkr/rvk
+	lvs
+	lvdisplay
+	df -hT
+	resize2fs /dev/vkr/rvk
+	df -hT
+
+	e2label /dev/sdb1
+	
+	e2label /dev/sdb1 linux
+	e2label /dev/sdb1
+	vim /etc/fstab
+	LABEL=linux	/data	ext2	defaults	0 0
+	mount -a
+	
+Quota Management:
+	
+	-c	-->Create new quotq files
+	-u	-->check user files
+	-g	-->check group files
+	-v	-->Display version information and exit
+
+	mount -o usrquota,grpquota /dev/sdg1/quotamount
+	quotacheck -cugv /quotamount
+
+Troubleshooting:
+
+Recover the root password:
+
+To block the unwanted single user mode:
+
+	vim/boot/grub/grub.conf
+
+	chroot /mnt/sysimage	
+	
+	

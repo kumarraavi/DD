@@ -1,0 +1,73 @@
+Types of file permissions:
+	Read(r)		-->You can view a files content		(4)- value for read
+	Write(w)	-->You can change or delete the file	(2)- value for write
+	Execute(x)	-->run the file as a program		(1)- value for Execute
+
+Types of Directory permissions:
+	Read(r)		-->list the contents of the directory
+	Write(w)	-->add and remove files in the directory
+	Execute(x)	-->list information about the files in the directory
+
+Permission	Owner	Group	Other
+Read		*	*	*	777
+Write		*	*	*
+Execute		*	*	*
+Permission	Owner	Group	Other
+Read		*	*	*	755
+Write		*		
+Execute		*	*	*
+Permission	Owner	Group	Other
+Read		*	*	*	744
+Write		*		
+Execute		*
+Permission	Owner	Group	Other
+Read		*			700
+Write		*		
+Execute		*	
+Permission	Owner	Group	Other
+Read		*	*	*	775
+Write		*	*	
+Execute		*	*	*
+
+Permissions will be given for other users.
+
+Login as root
+Create one folder /only4u 
+give the permissions such a way everybody can create a file or folder
+Create three users ram,sam,jam and set the password 123456 for all
+Login as a ram create one file and one folder inside /only4u and do it for all the users
+
+1.Create a user named <yourlastname> with primary membership to Apple group and secondary membership to mango and jam.
+Grant him the necessary permission such that he can configure the network without the intervention of the root.
+
+2.From the root user, create a folder named /tmp/reports,give the read and write permission only for a custom user you will create named <yoursurname>/
+Verify if it is working
+
+3.Create tom,dick and harry those primary group will be capgemini. When bill logging to system,his home directory should be /god/ratan. All user password will be capgemini.
+mukesh uid should be 1111,and he should not able to login. User you(your name) should be able to run any command.
+
+4.When you give "ls -l/" command in your terminal as a root, you found 1 file as bellow -rwx------ root root......... Touchmeifucan.
+Assign the access to the file such way tom will be able to read. User You will able to edit the file.
+
+
+3.
+	First we have to create capgemini group
+	/god/ratan folder (change the name ratan to bill)
+	
+
+Exercise:
+
+1.Create two partitions with 10G and 5G size on 2nd HDD (20G).
+Create ext4 and ext3 file system on them respecively and mount them persistently.
+
+2.Extend the swap space to 2 GB	
+
+3.Create a LV named Bahubali of 15GB based on 3 HDD.
+Extend Bahubali LV by 3 GB. Mount it permanent to /Indiancinema
+
+4.Create the LVM with the name "fedora" by using 1.5GB from the volume group "redhat".
+Piease note "fedora" should be available after reboot
+
+5.Modify the fstab to give an invalid (nonexistent) mount point for a disk pattition/vg/filesystem.
+Perform restart of the system ,startup should fail.
+Now recover from this failure using the best method you are supposed to use.
